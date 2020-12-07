@@ -13,17 +13,29 @@ for line in f.readlines():
 rows = len(map)
 columns = len(map[0])
 
-noOfTrees = 0
-tobogganColumn = 0
-tobogganRow = 0
 
-while tobogganRow < rows:
-    if map[tobogganRow][tobogganColumn] == "#":
-        noOfTrees += 1
-    tobogganRow += 1
-    
-    tobogganColumn += 3
-    if tobogganColumn >= columns:
-        tobogganColumn = tobogganColumn - columns
+def countTreesOnSlope(rowSlope, columnSlope):
+    noOfTrees = 0
+    tobogganColumn = 0
+    tobogganRow = 0
+    while tobogganRow < rows:
+        if map[tobogganRow][tobogganColumn] == "#":
+            noOfTrees += 1
+        tobogganRow += rowSlope
+        
+        tobogganColumn += columnSlope
+        if tobogganColumn >= columns:
+            tobogganColumn = tobogganColumn - columns
+    return noOfTrees
 
-print(noOfTrees)
+def solvePart2():
+    result = 1
+    result = countTreesOnSlope(1, 1)
+    result *= countTreesOnSlope(1, 3)
+    result *= countTreesOnSlope(1, 5)
+    result *= countTreesOnSlope(1, 7)
+    result *= countTreesOnSlope(2, 1)
+    return str(result)
+
+print("Part 1: " + str(countTreesOnSlope(1, 3)))
+print("Part 2: " + solvePart2())
