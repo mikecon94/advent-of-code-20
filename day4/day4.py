@@ -27,7 +27,15 @@ def solvePart1():
     return str(validPassportsCount)
 
 def solvePart2():
-    return "0"
+    validPassportsCount = 0
+    for passport in passports:
+        if passport.isValid():
+            if passport.isSchemaValid():
+                validPassportsCount += 1
+    return str(validPassportsCount)
 
 print("Part 1: " + solvePart1())
+
+#135 is too low
+#185 is too high
 print("Part 2: " + solvePart2())

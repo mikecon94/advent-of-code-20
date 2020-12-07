@@ -1,3 +1,5 @@
+import re
+
 class Passport:
     
     issueYear = None
@@ -11,6 +13,53 @@ class Passport:
 
     def __init__(self):
         pass
+
+    def isSchemaValid(self):
+        valid = True
+        if self.birthYear < 1920 or self.birthYear > 2002:
+            valid = False
+        if self.issueYear < 2010 or self.issueYear > 2020:
+            valid = False
+        if self.expirationYear < 2020 or self.expirationYear > 2030:
+            valid = False
+        if not self.heightValid():
+            valid = False
+        if not self.hairColourValid():
+            valid = False
+        if not self.eyeColourValid():
+            valid = False
+        if not self.idValid():
+            valid = False
+        return valid
+
+    def idValid(self):
+        pattern = re.compile("^[0-9]{9}$")
+        return pattern.match(self.id)
+
+    def eyeColourValid(self):
+        validColours = ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]
+        if self.eyeColour in validColours:
+            return True
+        else:
+            return False
+
+    def hairColourValid(self):
+        pattern = re.compile("#[0-9a-f]{6}")
+        return pattern.match(self.hairColour)
+
+    def heightValid(self):
+        valid = True
+        if self.height.endswith("cm"):
+            heightNum = int(self.height[:-2])
+            if heightNum < 150 or heightNum > 193:
+                valid = False
+        elif self.height.endswith("in"):
+            heightNum = int(self.height[:-2])
+            if heightNum < 59 or heightNum > 76:
+                valid = False
+        else:
+            valid = False
+        return valid
 
     def isValid(self):
         valid = True
@@ -51,13 +100,13 @@ class Passport:
             self.setCountryId(value)
 
     def setBirthYear(self, year):
-        self.birthYear = year
+        self.birthYear = int(year)
     
     def setIssueYear(self, year):
-        self.issueYear = year
+        self.issueYear = int(year)
     
     def setExpirationYear(self, year):
-        self.expirationYear = year
+        self.expirationYear = int(year)
 
     def setHeight(self, height):
         self.height = height
@@ -71,5 +120,5 @@ class Passport:
     def setId(self, id):
         self.id = id
 
-    def setCountryId(self, countryId):
-        self.countryId = countryId
+    def setCountryId(self, cid):
+        self.countryId = cid
