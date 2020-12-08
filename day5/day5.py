@@ -4,7 +4,6 @@ inputs = f.read()
 inputs = inputs.split("\n")
 
 def binarySearch(minNumber, maxNumber, upperHalf, index):
-    print(str(minNumber) + " " + str(maxNumber) + str(upperHalf) + str(index))
     if (maxNumber - minNumber) == 1:
         if upperHalf[index]:
             return maxNumber
@@ -25,7 +24,6 @@ def binarySearch(minNumber, maxNumber, upperHalf, index):
 
 seatIds = []
 for boardingPass in inputs:
-    print(boardingPass)
     upperHalf = []
     for i in range(0,7):
         if boardingPass[i] == 'F':
@@ -35,16 +33,13 @@ for boardingPass in inputs:
     rowNumber = binarySearch(0, 127, upperHalf, 0)
     upperHalf = []
     for j in range(7, 10):
-        print(boardingPass[j])
         if boardingPass[j] == 'L':
             upperHalf.append(False)
         else:
             upperHalf.append(True)
     columnNumber = binarySearch(0, 7, upperHalf, 0)
     seatId = (rowNumber * 8) + columnNumber
-    print(str(rowNumber) + " " + str(columnNumber))
     seatIds.append(seatId)
-print(seatIds)
 
 def solvePart1():
     maxSeatId = 0
@@ -54,7 +49,11 @@ def solvePart1():
     return str(maxSeatId)
 
 def solvePart2():
-    return str(2)
+    seatIds.sort()
+    allSeats = []
+    for i in range(seatIds[0], len(seatIds) + seatIds[0] + 1):
+        allSeats.append(i)
+    return str(sum(allSeats) - sum(seatIds))
 
 print("Part 1: " + solvePart1())
 print("Part 2: " + solvePart2())
