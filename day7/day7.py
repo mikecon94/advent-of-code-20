@@ -27,17 +27,27 @@ for rule in rules:
                 endOfLine = True
             else:
                 index += 4
-            allBags.append(currentBag)
+    allBags.append(currentBag)
 
 def printAllBags():
     for bag in allBags:
         print("COLOUR: " + bag.colour + " CHILDREN: " + str(bag.childBags))
 
+def findBag(colour):
+    for bag in allBags:
+            if bag.colour == colour:
+                return bag
+
+def sumOfChildBags(parentBag):
+    totalSum = 0
+    for child in parentBag.childBags:
+        totalSum += int(parentBag.childBags.get(child))
+        totalSum += int(parentBag.childBags.get(child)) * sumOfChildBags(findBag(child))
+    return int(totalSum)
+
 def solvePart1():
     setOfBags = set()
-    for bag in allBags:
-        if bag.colour == 'shiny gold':
-            setOfBags.add(bag)
+    setOfBags.add(findBag('shiny gold'))
     change = True
     while change:
         change = False
@@ -51,7 +61,8 @@ def solvePart1():
     return str(len(setOfBags) - 1)
 
 def solvePart2():
-    return "2"
+    parentBag = findBag('shiny gold')
+    return str(sumOfChildBags(parentBag))
 
 print("Part 1: " + solvePart1())
 print("Part 2: " + solvePart2())
