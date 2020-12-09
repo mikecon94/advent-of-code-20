@@ -19,7 +19,17 @@ def solvePart1():
     return str(sumOfQuestionsAnswered)
 
 def solvePart2():
-    return "2"
+    questionsAnswered = 0
+    for group in groups:
+        questionDict = dict()
+        numberOfPeople = len(group)
+        for person in group:
+            for answer in person:
+                questionDict[answer] = (questionDict.get(answer, 0) + 1)
+        for question in questionDict:
+            if questionDict.get(question) == numberOfPeople:
+                questionsAnswered += 1
+    return str(questionsAnswered)
 
 print("Part 1: " + solvePart1())
 print("Part 2: " + solvePart2())
