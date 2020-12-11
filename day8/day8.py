@@ -78,17 +78,5 @@ def solvePart2():
             return str(computer.accValue)
     return "0"
        
-    # computer = Computer(inputInstructions, 0, 0)
-    # instructionsRan = [False] * len(inputInstructions)
-    # wrongInstruction = False
-    # while True:
-    #     if instructionsRan[computer.instructionIndex] == True:
-    #         break
-    #     if computer.instructionIndex == len(computer.instructions):
-    #         break
-    #     instructionsRan[computer.instructionIndex] = True
-    #     computer.runCurrentInstruction()
-    # return str(computer.accValue)
-
 print("Part 1: " + solvePart1())
 print("Part 2: " + solvePart2())
