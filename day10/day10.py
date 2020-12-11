@@ -15,6 +15,13 @@ def possibleNumbers(value):
         counter += 1
     return listOfNums
 
+
+# This recursive method works backwards through the sorted list of numbers.
+# For each number it checks the possible numbers that can come before it - 3 numbers below
+# e.g. 9 = 6,7,8
+# For each of those it checks if it is in the input and if so calls itself recursively with that number as the new root.
+# The Cache stores the value of numbers already visited with 0 & 1 always being equal to 1.
+# For each of the possible values in the input it will sum the value of "connections" possible.
 cache = dict()
 cache[0] = 1
 cache[1] = 1
@@ -27,7 +34,6 @@ def populateCache(parentAdaptor):
             runningTotal += populateCache(numberToCheck)
     cache[parentAdaptor] = runningTotal
     return runningTotal
-
 
 def solvePart1():
     lastNumber = 0
@@ -45,7 +51,6 @@ def solvePart2():
     #Reverse the order to work backwards on the adaptors.
     inputs.append(0)
     inputs.sort(reverse=True)
-    # For each number in the list get the possible numbers below it
     populateCache(max(inputs))
     return str(max(cache.values()))
 
