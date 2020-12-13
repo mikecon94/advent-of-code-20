@@ -12,10 +12,10 @@ class Instruction:
 
 class Ship:
 
-    directions = {'N': { 'x': 0, 'y': 1, 90: 'E', 180: 'S', -90: 'W'},
-                  'S': { 'x': 0, 'y': -1,90: 'W', 180: 'N', -90: 'E'},
-                  'W': { 'x': -1, 'y': 0,90: 'N', 180: 'E', -90: 'S'},
-                  'E': { 'x': 1, 'y': 0, 90: 'S', 180: 'W', -90: 'N'}}
+    directions = {'N': { 'x': 0, 'y': 1, 90: 'E', 180: 'S', 270: 'W'},
+                  'S': { 'x': 0, 'y': -1,90: 'W', 180: 'N', 270: 'E'},
+                  'W': { 'x': -1, 'y': 0,90: 'N', 180: 'E', 270: 'S'},
+                  'E': { 'x': 1, 'y': 0, 90: 'S', 180: 'W', 270: 'N'}}
 
     def __init__(self, facing = "E", xPos = 0, yPos = 0):
         self.facing = facing
@@ -34,12 +34,9 @@ class Ship:
         if instruction.direction in ['L', 'R']:
             if instruction.direction == 'L':
                 if instruction.value == 90:
-                    instruction.value = -90
+                    instruction.value = 270
                 elif instruction.value == 270:
                     instruction.value = 90
-            elif instruction.direction == 'R':
-                if instruction.value == 270:
-                    instruction.value = -90
             self.facing = self.directions.get(self.facing).get(instruction.value) 
             # print("FACING: " + str(self.facing))
 
