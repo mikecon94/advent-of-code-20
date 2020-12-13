@@ -8,7 +8,7 @@ class Instruction:
         self.value = int(value)
 
     def print(self):
-        print("DIRECTION: " + self.direction + " VALUE: " + str(self.value))
+        print("INSTRUCTION - DIRECTION: " + self.direction + " VALUE: " + str(self.value))
 
 class Ship:
 
@@ -17,10 +17,12 @@ class Ship:
                   'W': { 'x': -1, 'y': 0,90: 'N', 180: 'E', 270: 'S'},
                   'E': { 'x': 1, 'y': 0, 90: 'S', 180: 'W', 270: 'N'}}
 
-    def __init__(self, facing = "E", xPos = 0, yPos = 0):
+    def __init__(self, facing = "E", xPos = 0, yPos = 0, waypointX = 10, waypointY = 1):
         self.facing = facing
         self.xPos = xPos
         self.yPos = yPos
+        self.waypointX = waypointX
+        self.waypointY = waypointY
 
     def runInstruction(self, instruction: Instruction):
         # instruction.print()
@@ -31,14 +33,20 @@ class Ship:
         elif instruction.direction in self.directions:
             self.xPos += self.directions.get(instruction.direction).get('x') * instruction.value
             self.yPos += self.directions.get(instruction.direction).get('y') * instruction.value
-        if instruction.direction in ['L', 'R']:
-            if instruction.direction == 'L':
-                if instruction.value == 90:
-                    instruction.value = 270
-                elif instruction.value == 270:
-                    instruction.value = 90
+        if instruction.direction == 'R':
             self.facing = self.directions.get(self.facing).get(instruction.value) 
             # print("FACING: " + str(self.facing))
+
+    def runInstructionUsingWaypoint(self, instruction: Instruction):
+        print("SHIP: " + str(self.facing) + " " + str(self.xPos) + ", " + str(self.yPos) + " WAYPOINT: " + str(self.waypointX) + "," + str(self.waypointY))
+        instruction.print()
+        # Move ship to Waypoint X times.
+        if instruction.direction == 'F':
+            self.xPos += self.waypointX * instruction.value
+            self.yPos += self.waypointY * instruction.value
+        if instruction.direction in self.directions:
+            self.waypointX += self.directions.get(instruction.direction).get('x') * instruction.value
+            self.waypointY += self.directions.get(instruction.direction).get('y') * instruction.value
 
     def calculateManhattanDistance(self):
         return abs(self.xPos) + abs(self.yPos)
@@ -46,6 +54,12 @@ class Ship:
 instructions = []
 for line in lines:
     instruction = Instruction(line[0], line[1:])
+    if instruction.direction == "L":
+        instruction.direction = "R"
+        if instruction.value == 90:
+            instruction.value = 270
+        elif instruction.value == 270:
+            instruction.value = 90
     instructions.append(instruction)
 
 def solvePart1():
@@ -55,8 +69,10 @@ def solvePart1():
     return str(ship.calculateManhattanDistance())
 
 def solvePart2():
-    return "2"
+    ship = Ship()
+    for instruction in instructions:
+        ship.runInstructionUsingWaypoint(instruction)
+    return str(ship.calculateManhattanDistance())
 
-#1834 is too high
 print("Part 1: " + solvePart1())
-print("Part 2: " + solvePart2())
+# print("Part 2: " + solvePart2())
