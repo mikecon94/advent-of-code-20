@@ -1,3 +1,5 @@
+import math
+
 f = open("input", "r")
 lines = f.read()
 lines = lines.split("\n")
@@ -38,15 +40,34 @@ class Ship:
             # print("FACING: " + str(self.facing))
 
     def runInstructionUsingWaypoint(self, instruction: Instruction):
-        print("SHIP: " + str(self.facing) + " " + str(self.xPos) + ", " + str(self.yPos) + " WAYPOINT: " + str(self.waypointX) + "," + str(self.waypointY))
-        instruction.print()
+        # print("SHIP: " + str(self.xPos) + ", " + str(self.yPos) + " WAYPOINT: " + str(self.waypointX) + "," + str(self.waypointY))
+        # instruction.print()
         # Move ship to Waypoint X times.
         if instruction.direction == 'F':
             self.xPos += self.waypointX * instruction.value
             self.yPos += self.waypointY * instruction.value
-        if instruction.direction in self.directions:
+        elif instruction.direction in self.directions:
             self.waypointX += self.directions.get(instruction.direction).get('x') * instruction.value
             self.waypointY += self.directions.get(instruction.direction).get('y') * instruction.value
+        elif instruction.direction == 'R':
+            self.rotateWaypointClockwiseAroundShip(instruction.value)
+
+    def rotateWaypointClockwiseAroundShip(self, angle):
+        newX = self.waypointX
+        newY = self.waypointY
+        if angle == 90:
+            tempX = newX
+            newX = newY
+            newY = tempX * -1
+        elif angle == 180:
+            newX *= -1
+            newY *= -1
+        elif angle == 270:
+            tempX = newX
+            newX = newY * -1
+            newY = tempX
+        self.waypointX = newX
+        self.waypointY = newY
 
     def calculateManhattanDistance(self):
         return abs(self.xPos) + abs(self.yPos)
@@ -75,4 +96,4 @@ def solvePart2():
     return str(ship.calculateManhattanDistance())
 
 print("Part 1: " + solvePart1())
-# print("Part 2: " + solvePart2())
+print("Part 2: " + solvePart2())
