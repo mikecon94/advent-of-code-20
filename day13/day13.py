@@ -62,7 +62,7 @@ def gcd(a, b):
         # gcd(B, R)
         return gcd(b, a % b)
 
-#This one hurts my head
+#This one hurt my head and took a lot of wrangling to get the answer.
 def solvePart2():
     # Start with highest Number and find multiples from there.
     # greatestIndex, greatestBusId = findMax()
@@ -75,6 +75,25 @@ def solvePart2():
     # https://rosettacode.org/wiki/Chinese_remainder_theorem#Python
     # https://www.reddit.com/r/adventofcode/comments/kcb3bb/2020_day_13_part_2_can_anyone_tell_my_why_this/
     # https://www.geeksforgeeks.org/chinese-remainder-theorem-set-2-implementation/
+    # 
+    # After reading the above multiple times I finally got the following working.
+    # The first problem was the modular inverse which I haven't come across before.
+    #       I thought we could do 1/b mod m but a special function using the GCD is required to calculate this correctly.
+    # After this was working the problem was I was solving the wrong equation:
+    #       I was using
+    #       0 = t (mod 67)
+    #       1 = t (mod 7)
+    #           ...
+    #       This should have been:
+    #       0 = t mod 67
+    #       0 = t+1 mod 7 
+    #           ...
+    #       which rearranges to give:
+    #       t = 0 mod 67
+    #       t = -1 mod 7
+    #           ...
+    # The negative one is the index and this needs to be reverse order.
+
     M = product()
     sum = 0
     for index, id in enumerate(busIds):
@@ -86,14 +105,6 @@ def solvePart2():
             sum += a*b*bDash
     timestamp = sum % M
     return str(timestamp)
-
-    # for index, id in enumerate(busIds):
-    #     if id != "x":
-    #         id = int(id)
-    #         pp = totalProduct // id
-    #         timestamp += (index+1) * gcd(pp, id) * pp
-    # return str(timestamp % totalProduct)
-
 
     # for index, id in enumerate(busIds):
     #     if id != "x":
@@ -130,6 +141,7 @@ def solvePart2():
     #     # print(str(sum%totalProduct))
     #     assert(checkDepartureTime < totalProduct)
     # return str(checkDepartureTime - greatestBusId - greatestIndex)
+
     # # First Attempt - Brute Force Solution that was too slow:
     # # while countOfMatches < len(busIds):
     # #     checkDepartureTime += greatestBusId
