@@ -28,6 +28,43 @@ class Computer:
             self.memory[instruction.address] = self.applyBitmask(self.mask, instruction.value)
         self.index += 1
     
+    def runInstructionWithDecoder(self, instruction):
+        if instruction.type == "mask":
+            self.mask = instruction.value
+        elif instruction.type == "mem":
+            newAddressFloats = self.applyBitmaskWithFloats(self.mask, instruction.address)
+            # Write instruction.value to all addresses possible.
+            for address in self.getAddresses(newAddressFloats, 0):
+                self.memory[address] = instruction.value
+        self.index += 1
+
+    # Recursive function that returns all permutations of an address with FLOATS (X) in.
+    def getAddresses(self, initialAddress, index):
+        listOfAddresses = []
+        if index == len(initialAddress):
+            listOfAddresses.append(initialAddress)
+        else:
+            if initialAddress[index] == "X":
+                newAddress = initialAddress[:index] + "0" + initialAddress[index +1:]
+                listOfAddresses += self.getAddresses(newAddress, index+1)
+                newAddress = initialAddress[:index] + "1" + initialAddress[index +1:]
+                listOfAddresses += self.getAddresses(newAddress, index+1)
+            else:
+                listOfAddresses += self.getAddresses(initialAddress, index+1)
+        return listOfAddresses
+
+    def applyBitmaskWithFloats(self, mask, value):
+        value = bin(value)[2:].rjust(36, '0')
+        newValue = ''
+        for index, bit in enumerate(mask):
+            if bit == "0":
+                newValue += value[index]
+            elif bit == "1":
+                newValue += "1"
+            else:
+                newValue += bit
+        return newValue
+
     def applyBitmask(self, mask, value):
         value = bin(value)[2:].rjust(36, '0')
         newValue = ''
@@ -68,7 +105,10 @@ def solvePart1():
     return str(sum(computer.memory.values()))
 
 def solvePart2():
-    return "2"
+    computer = Computer(instructions)
+    for instruction in instructions:
+        computer.runInstructionWithDecoder(instruction)
+    return str(sum(computer.memory.values()))
 
 print("Part 1: " + solvePart1())
 print("Part 2: " + solvePart2())
