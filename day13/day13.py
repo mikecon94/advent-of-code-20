@@ -65,9 +65,9 @@ def gcd(a, b):
 #This one hurts my head
 def solvePart2():
     # Start with highest Number and find multiples from there.
-    greatestIndex, greatestBusId = findMax()
+    # greatestIndex, greatestBusId = findMax()
 
-    countOfMatches = 0
+    # countOfMatches = 0
     # checkDepartureTime = findPossibleDepartureTime(greatestBusId, 0)
     
     # https://crypto.stanford.edu/pbc/notes/numbertheory/crt.html
@@ -75,14 +75,24 @@ def solvePart2():
     # https://rosettacode.org/wiki/Chinese_remainder_theorem#Python
     # https://www.reddit.com/r/adventofcode/comments/kcb3bb/2020_day_13_part_2_can_anyone_tell_my_why_this/
     # https://www.geeksforgeeks.org/chinese-remainder-theorem-set-2-implementation/
-    totalProduct = product()
-    timestamp = int(busIds[0])
+    M = product()
+    sum = 0
     for index, id in enumerate(busIds):
         if id != "x":
             id = int(id)
-            pp = totalProduct // id
-            timestamp += (index+1) * gcd(pp, id) * pp
-    return str(timestamp % totalProduct)
+            a = -index # Re-arranging the identity shows this is negative index.
+            b = M // id
+            bDash = pow(b, -1, id)
+            sum += a*b*bDash
+    timestamp = sum % M
+    return str(timestamp)
+
+    # for index, id in enumerate(busIds):
+    #     if id != "x":
+    #         id = int(id)
+    #         pp = totalProduct // id
+    #         timestamp += (index+1) * gcd(pp, id) * pp
+    # return str(timestamp % totalProduct)
 
 
     # for index, id in enumerate(busIds):
@@ -90,53 +100,53 @@ def solvePart2():
     #         id = int(id)
     #         timestamp += -index * (totalProduct // id) * pow(totalProduct // id, -1, id)
     # return str(timestamp % totalProduct)
-    checkDepartureTime = findPossibleDepartureTime(int(greatestBusId), 1202160085)
-    bDict = dict()
-    for id in busIds:
-        if id != "x":
-            id = int(id)
-            bi = totalProduct // id
-            biDash = gcd(bi, id)
-            bDict[id] = {'bi': bi, 'biDash': biDash}
+    # checkDepartureTime = findPossibleDepartureTime(int(greatestBusId), 1202160085)
+    # bDict = dict()
+    # for id in busIds:
+    #     if id != "x":
+    #         id = int(id)
+    #         bi = totalProduct // id
+    #         biDash = gcd(bi, id)
+    #         bDict[id] = {'bi': bi, 'biDash': biDash}
     
-    sum = -1
-    while sum % totalProduct != 0:
-        sum = 0
-        for index, id in enumerate(busIds):
-            if id != "x":
-                id = float(id)
-                bi = float(bDict.get(id).get('bi'))
-                biDash = float(bDict.get(id).get('biDash'))
-                # bi = totalProduct/id
-                # biDash = (1/bi) % id # This is wrong.
-                # We need GCD of bi & id
-                # biDash = gcd(bi, id)
-                # ai = 1068781 + index
-                ai = float(checkDepartureTime - (greatestIndex - index))
-                # ai = float(checkDepartureTime + index)
-                sum += float(bi * biDash * ai)
-        checkDepartureTime += greatestBusId
-        # checkDepartureTime += int(busIds[0])
-        # print(str(sum%totalProduct))
-        assert(checkDepartureTime < totalProduct)
-    return str(checkDepartureTime - greatestBusId - greatestIndex)
-    # First Attempt - Brute Force Solution that was too slow:
-    # while countOfMatches < len(busIds):
+    # sum = -1
+    # while sum % totalProduct != 0:
+    #     sum = 0
+    #     for index, id in enumerate(busIds):
+    #         if id != "x":
+    #             id = float(id)
+    #             bi = float(bDict.get(id).get('bi'))
+    #             biDash = float(bDict.get(id).get('biDash'))
+    #             # bi = totalProduct/id
+    #             # biDash = (1/bi) % id # This is wrong.
+    #             # We need GCD of bi & id
+    #             # biDash = gcd(bi, id)
+    #             # ai = 1068781 + index
+    #             ai = float(checkDepartureTime - (greatestIndex - index))
+    #             # ai = float(checkDepartureTime + index)
+    #             sum += float(bi * biDash * ai)
     #     checkDepartureTime += greatestBusId
-    #     countOfMatches = 0
-    #     for index, busId in enumerate(busIds):
-    #         # print("BUS ID: " + str(busId))
-    #         if busId == "x":
-    #             countOfMatches += 1
-    #         elif int(busId) == greatestBusId:
-    #             countOfMatches += 1
-    #         else:
-    #             # print("CHECKING: " + str(checkDepartureTime - (greatestIndex - index)))
-    #             if (checkDepartureTime - (greatestIndex - index)) % int(busId) == 0:
-    #                 countOfMatches += 1
-    #             else:
-    #                 break
-    return str(checkDepartureTime - greatestIndex)
+    #     # checkDepartureTime += int(busIds[0])
+    #     # print(str(sum%totalProduct))
+    #     assert(checkDepartureTime < totalProduct)
+    # return str(checkDepartureTime - greatestBusId - greatestIndex)
+    # # First Attempt - Brute Force Solution that was too slow:
+    # # while countOfMatches < len(busIds):
+    # #     checkDepartureTime += greatestBusId
+    # #     countOfMatches = 0
+    # #     for index, busId in enumerate(busIds):
+    # #         # print("BUS ID: " + str(busId))
+    # #         if busId == "x":
+    # #             countOfMatches += 1
+    # #         elif int(busId) == greatestBusId:
+    # #             countOfMatches += 1
+    # #         else:
+    # #             # print("CHECKING: " + str(checkDepartureTime - (greatestIndex - index)))
+    # #             if (checkDepartureTime - (greatestIndex - index)) % int(busId) == 0:
+    # #                 countOfMatches += 1
+    # #             else:
+    # #                 break
+    # return str(checkDepartureTime - greatestIndex)
 
 print("Part 1: " + solvePart1())
 print("Part 2: " + solvePart2())
