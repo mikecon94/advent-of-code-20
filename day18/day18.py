@@ -1,3 +1,6 @@
+from shunting_yard import shunting_yard
+
+
 f = open("input", "r")
 f = f.read()
 lines = f.split("\n")
@@ -57,7 +60,10 @@ def solvePart1():
     return str(sum)
 
 def solvePart2():
-    return "2"
+    sum = 0
+    for line in lines:
+        sum += shunting_yard(line).evaluate()
+    return str(sum)
 
 print("Part 1: " + solvePart1())
 print("Part 2: " + solvePart2())
