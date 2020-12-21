@@ -42,7 +42,6 @@ def countTokensInString(string, token):
     return total
 
 def evaluate(expression):
-    print(expression)
     sum = 0
     currentOp = "nop"
     stack = 0
@@ -89,7 +88,6 @@ def solvePart1():
     sum = 0
     for line in lines:
         sum += evaluate(line)
-        print(line)
     
     return str(sum)
 
