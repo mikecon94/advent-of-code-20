@@ -2,38 +2,6 @@ f = open("input", "r")
 f = f.read()
 lines = f.split("\n")
 
-class expression:
-
-    def __init__(self, type, value, lExpression, rExpression):
-        self.lExpression = 0
-        self.rExpression = 0
-        self.type = "leaf"
-        self.value = 0
-        self.__parse(expression)
-
-    def evaluate(self):
-        if self.type == "leaf":
-            return self.value
-        else:
-            lhs = lExpression.evaluate()
-            rhs = rExpression.evaluate()
-            if self.type == "*":
-                return lhs * rhs
-            elif self.type == "+":
-                return lhs + rhs
-            else:
-                raise ArithmeticError("Unknown Operator")
-
-def parseExpression(strExpression):
-    tokens = strExpression.split(" ")
-    print(tokens)
-    pass
-
-
-class leafNode:
-    def __init__(self, value):
-        self.value = value
-
 def countTokensInString(string, token):
     total = 0
     for char in string:
@@ -83,12 +51,9 @@ def evaluate(expression):
     return sum
 
 def solvePart1():
-    # print("RESULT:", expression("1 + 2 * 3 + 4 * 5 + 6").evaluate())
-    # Loop over each expression
     sum = 0
     for line in lines:
         sum += evaluate(line)
-    
     return str(sum)
 
 def solvePart2():
